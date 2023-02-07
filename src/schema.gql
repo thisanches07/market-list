@@ -1,0 +1,21 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Market {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  markets: [Market!]!
+  findMarketById(id: String!): Market!
+}
+
+type Mutation {
+  createMarket(data: CreateMarketDto!): Market!
+}
+
+input CreateMarketDto {
+  name: String!
+}
