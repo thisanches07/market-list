@@ -1,4 +1,5 @@
 import { Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { Delete, HttpCode } from '@nestjs/common/decorators';
 import { Args } from '@nestjs/graphql';
 import { Market } from 'src/types/entities/market.entity';
 import { Tokens } from 'src/utils/tokens';
@@ -25,5 +26,11 @@ export class MarketController {
   @Get('/:id')
   getMarketById(@Param('id') id: string) {
     return this.service.getMarketById(id);
+  }
+
+  @Delete('/:id')
+  @HttpCode(204)
+  updateMarket(@Param('id') id: string) {
+    return this.service.deleteMarket(id);
   }
 }

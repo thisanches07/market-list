@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateMarketDto } from 'src/types/dtos/update-market.dto';
 import { Market } from 'src/types/entities/market.entity';
 import { Repository } from 'typeorm';
 import { CreateMarketDto } from './../../types/dtos/create-market.dto';
@@ -17,7 +18,7 @@ export class MarketService implements Operations {
   ) {}
 
   async createMarket(data: CreateMarketDto): Promise<Market> {
-    const market = await this.marketRepository.create(data);
+    const market = this.marketRepository.create(data);
     const marketSaved = await this.marketRepository.save(market);
 
     if (!marketSaved) {
@@ -39,5 +40,21 @@ export class MarketService implements Operations {
       throw new NotFoundException('Market not found');
     }
     return market;
+  }
+
+  async updateMarket(id: string, data: UpdateMarketDto): Promise<Market> {
+    const market = await this.getMarketById(id);
+    await this.marketRepository.update(market, { ...data });
+
+    //cria-se esse objeto porque em update faltam propriedades do tipo user
+    const marketUpdated = this.marketRepository.create({ ...market, ...data });
+    return marketUpdated;
+  }
+
+  async deleteMarket(id: string): Promise<boolean> {
+    await this.getMarketById(id);
+    const deleted = await this.marketRepository.delete(id);
+    if (deleted) return true;
+    return false;
   }
 }

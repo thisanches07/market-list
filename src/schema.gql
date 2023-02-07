@@ -14,8 +14,14 @@ type Query {
 
 type Mutation {
   createMarket(data: CreateMarketDto!): Market!
+  updateMarket(id: String!, data: UpdateMarketDto!): Market!
+  deleteMarket(id: String!): Boolean!
 }
 
 input CreateMarketDto {
+  name: String!
+}
+
+input UpdateMarketDto {
   name: String!
 }
